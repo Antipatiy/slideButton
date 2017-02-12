@@ -3,16 +3,28 @@
 
   var slideButton = {
 
-    getButtonWidth: function() {
-      return $('.active').outerWidth();
+    getActiveButton: function () {
+      return $('.active');
     },
 
-    getCoordinateOfParrentBlock: function() {
-      return $('.menu').position().left;
+    getMenuBlock: function () {
+      return $('.menu');
+    },
+
+    getTagAInMenuBlock: function () {
+      return $(this.getMenuBlock() + ' a');
+    },
+
+    getButtonWidth: function() {
+      return this.getActiveButton().outerWidth();
+    },
+
+    getCoordinateOfParentBlock: function() {
+      return this.getMenuBlock().position().left;
     },
 
     getCoordinateOfActiveButton: function() {
-      return $('.active').position().left - this.getCoordinateOfParrentBlock();
+      return this.getActiveButton().position().left - this.getCoordinateOfParentBlock();
     },
 
     setActiveButtonBlock: function() {
@@ -21,16 +33,16 @@
       $('.active-button-block').css({
         'left': that.getCoordinateOfActiveButton() + that.getButtonWidth(),
         'margin-left': -that.getButtonWidth(),
-        'width': that.getButtonWidth(),
+        'width': that.getButtonWidth()
       });
     },
 
     removeActiveClass: function() {
-      $('.menu a').removeClass('active');
+      this.getTagAInMenuBlock().removeClass(this.getActiveButton());
     },
 
     addActiveClass: function(obj) {
-      $(obj).addClass('active');
+      $(obj).addClass(this.getActiveButton());
     },
 
     changeActiveButtonOnClick: function() {
