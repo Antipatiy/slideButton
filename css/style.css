@@ -1,11 +1,17 @@
-.menu {
-  /*background: rgba(0, 143, 203, 0.39);*/
-  height: 30px;
-  width: 700px;
+.menu-wrapper {
+  overflow: hidden;
+  width: 620px;
 }
 
-a {
-  padding: 0 20px;
+.menu-container {
+  background: rgba(0, 143, 203, 0.39);
+  min-height: 46px;
+  /*width: 700px;*/
+}
+
+.btn {
+  padding: 10px 20px 10px 20px;
+  float: left;
   text-decoration: none;
   position: relative;
   z-index: 10;
@@ -14,7 +20,6 @@ a {
 }
 
 .active {
-  /*font-size: 23px;*/
   color: #ffffff;
   -webkit-transition: all .3s;
   -moz-transition: all .3s;
@@ -24,8 +29,7 @@ a {
 
 .active-button-block {
   background: linear-gradient(to left, rgba(255, 0, 0, 0.65), #ff0000);
-  border-radius: 15px;
-  height: 30px;
+  border-radius: 20px;
   float: left;
   position: relative;
   z-index: 1;

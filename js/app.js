@@ -7,12 +7,16 @@
       return $('.active');
     },
 
+    getActiveButtonBlock: function () {
+      return $('.active-button-block');
+    },
+
     getActiveButtonClassAsString: function () {
-      return $('.active').attr('class').split(' ')[1];
+      return this.getActiveButton().attr('class').split(' ')[1];
     },
 
     getMenuBlock: function () {
-      return $('.menu');
+      return $('.menu-container');
     },
 
     getButtonClass: function () {
@@ -21,6 +25,38 @@
 
     getButtonWidth: function () {
       return this.getActiveButton().outerWidth();
+    },
+
+    getArrOfButtonWidth: function () {
+      var arr = [];
+
+      this.getButtonClass().each(function () {
+        arr.push($(this).outerWidth());
+      });
+
+      return arr;
+    },
+
+    getWidthOfMenuContainer: function (arrOfButtonWidth) {
+      var widthOfMenuContainer = 0;
+
+      arrOfButtonWidth.forEach(function (item) {
+        widthOfMenuContainer += item;
+      });
+
+      return widthOfMenuContainer;
+    },
+
+    setWidthOfMenuContainer: function () {
+      var that = this;
+
+      this.getMenuBlock().css({
+        'width': that.getWidthOfMenuContainer(that.getArrOfButtonWidth())
+      })
+    },
+
+    getButtonHeight: function () {
+      return this.getActiveButton().outerHeight();
     },
 
     getCoordinateOfParentBlock: function () {
@@ -34,10 +70,11 @@
     setActiveButtonBlock: function () {
       var that = this;
 
-      $('.active-button-block').css({
+      this.getActiveButtonBlock().css({
         'left': that.getCoordinateOfActiveButton() + that.getButtonWidth(),
         'margin-left': -that.getButtonWidth(),
-        'width': that.getButtonWidth()
+        'width': that.getButtonWidth(),
+        'height': that.getButtonHeight()
       });
     },
 
@@ -60,6 +97,7 @@
     }
   };
 
+  slideButton.setWidthOfMenuContainer();
   slideButton.setActiveButtonBlock();
   slideButton.changeActiveButtonOnClick(slideButton.getButtonClass(), slideButton.getActiveButtonClassAsString());
 }(window, jQuery));
