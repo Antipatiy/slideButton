@@ -1,4 +1,4 @@
-(function(global, $) {
+(function (global, $) {
   "use strict";
 
   var slideButton = {
@@ -7,27 +7,31 @@
       return $('.active');
     },
 
+    getActiveButtonClassAsString: function () {
+      return $('.active').attr('class').split(' ')[1];
+    },
+
     getMenuBlock: function () {
       return $('.menu');
     },
 
-    getTagAInMenuBlock: function () {
-      return $(this.getMenuBlock() + ' a');
+    getButtonClass: function () {
+      return $('.btn');
     },
 
-    getButtonWidth: function() {
+    getButtonWidth: function () {
       return this.getActiveButton().outerWidth();
     },
 
-    getCoordinateOfParentBlock: function() {
+    getCoordinateOfParentBlock: function () {
       return this.getMenuBlock().position().left;
     },
 
-    getCoordinateOfActiveButton: function() {
+    getCoordinateOfActiveButton: function () {
       return this.getActiveButton().position().left - this.getCoordinateOfParentBlock();
     },
 
-    setActiveButtonBlock: function() {
+    setActiveButtonBlock: function () {
       var that = this;
 
       $('.active-button-block').css({
@@ -37,25 +41,25 @@
       });
     },
 
-    removeActiveClass: function() {
-      this.getTagAInMenuBlock().removeClass(this.getActiveButton());
+    removeActiveClass: function (htmlClass, activeButtonClass) {
+      $(htmlClass).removeClass(activeButtonClass);
     },
 
-    addActiveClass: function(obj) {
-      $(obj).addClass(this.getActiveButton());
+    addActiveClass: function (htmlClass, activeButtonClass) {
+      $(htmlClass).addClass(activeButtonClass);
     },
 
-    changeActiveButtonOnClick: function() {
+    changeActiveButtonOnClick: function (htmlClass, activeButtonClass) {
       var that = this;
 
-      $('.btn').on('click', function() {
-        that.removeActiveClass();
-        that.addActiveClass($(this));
+      $(htmlClass).on('click', function () {
+        that.removeActiveClass(htmlClass, activeButtonClass);
+        that.addActiveClass($(this), activeButtonClass);
         that.setActiveButtonBlock();
       });
     }
   };
 
   slideButton.setActiveButtonBlock();
-  slideButton.changeActiveButtonOnClick();
+  slideButton.changeActiveButtonOnClick(slideButton.getButtonClass(), slideButton.getActiveButtonClassAsString());
 }(window, jQuery));
