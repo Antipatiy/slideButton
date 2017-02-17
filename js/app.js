@@ -77,12 +77,24 @@
       return this.getMenuContainer().position().left;
     },
 
-    getCoordinateOfActiveButton: function () {
-      return this.getActiveButton().position().left - this.getCoordinateOfParentBlock();
+    getCoordinateOfParentBlockByOffset: function () {
+      return this.getMenuContainer().offset().left;
+    },
+
+    getCoordinateOfMenuWrapper: function () {
+      return this.getMenuWrapper().offset().left;
+    },
+    //
+    // getCoordinateOfActiveButton: function () {
+    //   return this.getActiveButton().position().left - this.getCoordinateOfParentBlock();
+    // },
+
+    getCenterOfMenuWrapperAtDocument: function () {
+      return this.getMenuWrapper().width() * 0.5 + this.getCoordinateOfMenuWrapper();
     },
 
     getCenterOfMenuWrapper: function () {
-      return this.getMenuWrapper().width() * 0.5 + this.getMenuWrapper().offset().left;
+      return this.getMenuWrapper().width() * 0.5;
     },
 
     getCenterOfActiveButton: function () {
@@ -128,6 +140,9 @@
       var that = this;
 
       $(htmlClass).on('click', function () {
+
+        that.getCoordinateOfParentBlock();
+
         that.removeActiveClass(htmlClass, activeButtonClass);
         that.addActiveClass($(this), activeButtonClass);
         that.setToCenterActiveButton();
@@ -135,12 +150,29 @@
       });
     },
 
+    stopButtonSliding: function () {
+      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper()) {
+
+      }
+    },
+
     setToCenterActiveButton: function () {
       var that = this;
 
-      this.getMenuContainer().offset({
-        'left': that.getCenterOfMenuWrapper() - that.getWidthOfButtonsOnLeftSideOfActive() - that.getCenterOfActiveButton()
-      });
+      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() && this.getCoordinateOfParentBlockByOffset() === this.getCoordinateOfMenuWrapper()) {
+
+        that.getCoordinateOfParentBlockByOffset();
+        that.getCoordinateOfMenuWrapper();
+
+        return false;
+      }
+      else {
+        this.getMenuContainer().offset({
+          'left': that.getCenterOfMenuWrapperAtDocument() -
+          that.getWidthOfButtonsOnLeftSideOfActive() -
+          that.getCenterOfActiveButton()
+        });
+      }
     }
     // End set elements characteristics ------------------------------------------------------------------------------
   };
