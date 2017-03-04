@@ -3,7 +3,7 @@
   overflow: hidden;
   width: 700px;
 
-  /*border: 1px dashed blue;*/
+  outline: 1px dashed blue;
 }
 
 .menu-container {

@@ -5,23 +5,23 @@
 
     // Get elements ------------------------------------------------------------------------------
 
-    getActiveButton: function () {
+    $getActiveButton: function () {
       return $('.active');
     },
 
-    getActiveButtonBlock: function () {
+    $getActiveButtonVirtualBlock: function () {
       return $('.active-button-block');
     },
 
-    getMenuContainer: function () {
+    $getMenuContainer: function () {
       return $('.menu-container');
     },
 
-    getButtonClass: function () {
+    $getButton: function () {
       return $('.btn');
     },
 
-    getMenuWrapper: function () {
+    $getMenuWrapper: function () {
       return $('.menu-wrapper');
     },
 
@@ -30,24 +30,24 @@
     // Get elements characteristics ------------------------------------------------------------------------------
 
     getActiveButtonClassAsString: function () {
-      return this.getActiveButton().attr('class').split(' ')[1];
+      return this.$getActiveButton().attr('class').split(' ')[1];
     },
 
     getButtonWidth: function () {
-      return this.getActiveButton().outerWidth();
+      return this.$getActiveButton().outerWidth();
     },
 
     getArrOfButtonWidth: function (activeClass) {
       var arr = [];
 
       if (arguments.length === 0) {
-        this.getButtonClass().each(function () {
+        this.$getButton().each(function () {
           arr.push($(this).outerWidth());
         });
         return arr;
       }
       else {
-        this.getButtonClass().each(function () {
+        this.$getButton().each(function () {
           if ($(this).hasClass(activeClass)) {
             return false;
           }
@@ -70,31 +70,31 @@
     },
 
     getButtonHeight: function () {
-      return this.getActiveButton().outerHeight();
+      return this.$getActiveButton().outerHeight();
     },
 
     getCoordinateOfParentBlock: function () {
-      return this.getMenuContainer().position().left;
+      return this.$getMenuContainer().position().left;
     },
 
     getCoordinateOfParentBlockByOffset: function () {
-      return this.getMenuContainer().offset().left;
+      return this.$getMenuContainer().offset().left;
     },
 
     getCoordinateOfMenuWrapper: function () {
-      return this.getMenuWrapper().offset().left;
+      return this.$getMenuWrapper().offset().left;
     },
     //
     // getCoordinateOfActiveButton: function () {
-    //   return this.getActiveButton().position().left - this.getCoordinateOfParentBlock();
+    //   return this.$getActiveButton().position().left - this.getCoordinateOfParentBlock();
     // },
 
     getCenterOfMenuWrapperAtDocument: function () {
-      return this.getMenuWrapper().width() * 0.5 + this.getCoordinateOfMenuWrapper();
+      return this.$getMenuWrapper().width() * 0.5 + this.getCoordinateOfMenuWrapper();
     },
 
     getCenterOfMenuWrapper: function () {
-      return this.getMenuWrapper().width() * 0.5;
+      return this.$getMenuWrapper().width() * 0.5;
     },
 
     getCenterOfActiveButton: function () {
@@ -102,7 +102,10 @@
     },
 
     getWidthOfButtonsOnLeftSideOfActive: function () {
-      return this.getWidthOfMenuContainer(this.getArrOfButtonWidth(this.getActiveButtonClassAsString()));
+      var activeClass = this.getActiveButtonClassAsString(),
+          arrOfButtonWidth = this.getArrOfButtonWidth(activeClass);
+      
+      return this.getWidthOfMenuContainer(arrOfButtonWidth);
     },
 
     // End get elements characteristics ------------------------------------------------------------------------------
@@ -110,17 +113,22 @@
     // Set elements characteristics ------------------------------------------------------------------------------
 
     setWidthOfMenuContainer: function () {
-      var that = this;
+      var that = this,
+          arrOfButtonWidth = that.getArrOfButtonWidth();
 
-      this.getMenuContainer().css({
-        'width': that.getWidthOfMenuContainer(that.getArrOfButtonWidth())
+      this.$getMenuContainer().css({
+        'width': that.getWidthOfMenuContainer(arrOfButtonWidth)
       })
     },
 
     setActiveButtonBlock: function () {
+      $('<div class="active-button-block"></div>').insertBefore('.btn:first-child');
+    },
+
+    setPropertiesOfActiveButtonBlock: function () {
       var that = this;
 
-      this.getActiveButtonBlock().css({
+      this.$getActiveButtonVirtualBlock().css({
         'left': that.getWidthOfButtonsOnLeftSideOfActive() + that.getButtonWidth(),
         'margin-left': -that.getButtonWidth(),
         'width': that.getButtonWidth(),
@@ -146,7 +154,7 @@
         that.removeActiveClass(htmlClass, activeButtonClass);
         that.addActiveClass($(this), activeButtonClass);
         that.setToCenterActiveButton();
-        that.setActiveButtonBlock();
+        that.setPropertiesOfActiveButtonBlock();
       });
     },
 
@@ -167,7 +175,7 @@
         return false;
       }
       else {
-        this.getMenuContainer().offset({
+        this.$getMenuContainer().offset({
           'left': that.getCenterOfMenuWrapperAtDocument() -
           that.getWidthOfButtonsOnLeftSideOfActive() -
           that.getCenterOfActiveButton()
@@ -178,9 +186,10 @@
   };
 
   slideButton.setWidthOfMenuContainer();
-  slideButton.changeActiveButtonOnClick(slideButton.getButtonClass(), slideButton.getActiveButtonClassAsString());
+  slideButton.changeActiveButtonOnClick(slideButton.$getButton(), slideButton.getActiveButtonClassAsString());
   slideButton.setToCenterActiveButton();
   slideButton.setActiveButtonBlock();
+  slideButton.setPropertiesOfActiveButtonBlock();
 }(window, jQuery));
 
 
