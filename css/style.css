@@ -1,14 +1,18 @@
 .menu-wrapper {
   margin: 0 auto;
   overflow: hidden;
-  width: 100%;
+  width: 700px;
 
-  /*border: 1px dashed blue;*/
+  outline: 1px dashed blue;
 }
 
 .menu-container {
-  /*background: rgba(0, 143, 203, 0.39);*/
+  background: rgba(0, 143, 203, 0.39);
   min-height: 46px;
+  -webkit-transition: all .35s;
+  -moz-transition: all .35s;
+  -o-transition: all .35s;
+  transition: all .35s;
 }
 
 .btn {
@@ -40,4 +44,3 @@
   -o-transition: all .3s;
   transition: all .3s;
 }
-div {position:
