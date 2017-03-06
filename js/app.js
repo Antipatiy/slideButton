@@ -144,8 +144,10 @@
       $(htmlClass).addClass(activeButtonClass);
     },
 
-    changeActiveButtonOnClick: function (htmlClass, activeButtonClass) {
-      var that = this;
+    changeActiveButtonOnClick: function () {
+      var that = this,
+          htmlClass = this.$getButton(),
+          activeButtonClass = this.getActiveButtonClassAsString();
 
       $(htmlClass).on('click', function () {
 
@@ -167,12 +169,13 @@
     setToCenterActiveButton: function () {
       var that = this;
 
-      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() && this.getCoordinateOfParentBlockByOffset() === this.getCoordinateOfMenuWrapper()) {
+      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() &&
+          this.getCoordinateOfParentBlockByOffset() === this.getCoordinateOfMenuWrapper()) {
 
-        that.getCoordinateOfParentBlockByOffset();
-        that.getCoordinateOfMenuWrapper();
+        this.getCoordinateOfParentBlockByOffset();
+        this.getCoordinateOfMenuWrapper();
 
-        return false;
+        // return false;
       }
       else {
         this.$getMenuContainer().offset({
@@ -180,13 +183,15 @@
           that.getWidthOfButtonsOnLeftSideOfActive() -
           that.getCenterOfActiveButton()
         });
+
+        // return false;
       }
     }
     // End set elements characteristics ------------------------------------------------------------------------------
   };
 
   slideButton.setWidthOfMenuContainer();
-  slideButton.changeActiveButtonOnClick(slideButton.$getButton(), slideButton.getActiveButtonClassAsString());
+  slideButton.changeActiveButtonOnClick();
   slideButton.setToCenterActiveButton();
   slideButton.setActiveButtonBlock();
   slideButton.setPropertiesOfActiveButtonBlock();
