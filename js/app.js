@@ -150,11 +150,11 @@
           activeButtonClass = this.getActiveButtonClassAsString();
 
       $(htmlClass).on('click', function () {
+        var $htmlClass = $(this);
 
         that.getCoordinateOfParentBlock();
-
         that.removeActiveClass(htmlClass, activeButtonClass);
-        that.addActiveClass($(this), activeButtonClass);
+        that.addActiveClass($htmlClass, activeButtonClass);
         that.setToCenterActiveButton();
         that.setPropertiesOfActiveButtonBlock();
       });
@@ -171,20 +171,20 @@
 
       if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() &&
           this.getCoordinateOfParentBlockByOffset() === this.getCoordinateOfMenuWrapper()) {
-
-        this.getCoordinateOfParentBlockByOffset();
-        this.getCoordinateOfMenuWrapper();
-
-        // return false;
+        return false;
       }
+      // else if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() &&
+      //     this.getCoordinateOfParentBlockByOffset() <= this.getCoordinateOfMenuWrapper()) {
+      //   this.$getMenuContainer().offset({
+      //     'left': that.getCoordinateOfParentBlock()
+      //   });
+      // }
       else {
         this.$getMenuContainer().offset({
           'left': that.getCenterOfMenuWrapperAtDocument() -
           that.getWidthOfButtonsOnLeftSideOfActive() -
           that.getCenterOfActiveButton()
         });
-
-        // return false;
       }
     }
     // End set elements characteristics ------------------------------------------------------------------------------
