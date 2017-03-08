@@ -77,17 +77,9 @@
       return this.$getMenuContainer().position().left;
     },
 
-    getCoordinateOfParentBlockByOffset: function () {
-      return this.$getMenuContainer().offset().left;
-    },
-
     getCoordinateOfMenuWrapper: function () {
       return this.$getMenuWrapper().offset().left;
     },
-    //
-    // getCoordinateOfActiveButton: function () {
-    //   return this.$getActiveButton().position().left - this.getCoordinateOfParentBlock();
-    // },
 
     getCenterOfMenuWrapperAtDocument: function () {
       return this.$getMenuWrapper().width() * 0.5 + this.getCoordinateOfMenuWrapper();
@@ -106,6 +98,12 @@
           arrOfButtonWidth = this.getArrOfButtonWidth(activeClass);
       
       return this.getWidthOfMenuContainer(arrOfButtonWidth);
+    },
+
+    getWidthOfButtonsOnRightSideOfActive: function () {
+      var arrOfButtonWidth = this.getArrOfButtonWidth();
+
+      return this.getWidthOfMenuContainer(arrOfButtonWidth) - this.getWidthOfButtonsOnLeftSideOfActive();
     },
 
     // End get elements characteristics ------------------------------------------------------------------------------
@@ -160,24 +158,16 @@
       });
     },
 
-    stopButtonSliding: function () {
-      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper()) {
-
-      }
-    },
-
     setToCenterActiveButton: function () {
       var that = this;
 
-      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() &&
-          this.getCoordinateOfParentBlockByOffset() === this.getCoordinateOfMenuWrapper()) {
-        return false;
+      if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper()) {
+        this.$getMenuContainer().offset({
+          'left': that.getCoordinateOfMenuWrapper()
+        });
       }
-      // else if (this.getWidthOfButtonsOnLeftSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper() &&
-      //     this.getCoordinateOfParentBlockByOffset() <= this.getCoordinateOfMenuWrapper()) {
-      //   this.$getMenuContainer().offset({
-      //     'left': that.getCoordinateOfParentBlock()
-      //   });
+      // else if (this.getWidthOfButtonsOnRightSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper()) {
+      //   // set the container of menu to the right side
       // }
       else {
         this.$getMenuContainer().offset({
