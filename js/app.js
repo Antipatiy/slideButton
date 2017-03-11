@@ -25,15 +25,13 @@
       return $('.menu-wrapper');
     },
 
-    // End get elements ------------------------------------------------------------------------------
-
     // Get elements characteristics ------------------------------------------------------------------------------
 
     getActiveButtonClassAsString: function () {
       return this.$getActiveButton().attr('class').split(' ')[1];
     },
 
-    getButtonWidth: function () {
+    getActiveButtonWidth: function () {
       return this.$getActiveButton().outerWidth();
     },
 
@@ -59,6 +57,10 @@
       }
     },
 
+    getWidthOfMenuWrapper: function () {
+      return this.$getMenuWrapper().width()
+    },
+
     getWidthOfMenuContainer: function (arrOfButtonWidth) {
       var widthOfMenuContainer = 0;
 
@@ -82,15 +84,15 @@
     },
 
     getCenterOfMenuWrapperAtDocument: function () {
-      return this.$getMenuWrapper().width() * 0.5 + this.getCoordinateOfMenuWrapper();
+      return this.getWidthOfMenuWrapper() * 0.5 + this.getCoordinateOfMenuWrapper();
     },
 
     getCenterOfMenuWrapper: function () {
-      return this.$getMenuWrapper().width() * 0.5;
+      return this.getWidthOfMenuWrapper() * 0.5;
     },
 
     getCenterOfActiveButton: function () {
-      return this.getButtonWidth() * 0.5;
+      return this.getActiveButtonWidth() * 0.5;
     },
 
     getWidthOfButtonsOnLeftSideOfActive: function () {
@@ -105,8 +107,6 @@
 
       return this.getWidthOfMenuContainer(arrOfButtonWidth) - this.getWidthOfButtonsOnLeftSideOfActive();
     },
-
-    // End get elements characteristics ------------------------------------------------------------------------------
 
     // Set elements characteristics ------------------------------------------------------------------------------
 
@@ -127,9 +127,9 @@
       var that = this;
 
       this.$getActiveButtonVirtualBlock().css({
-        'left': that.getWidthOfButtonsOnLeftSideOfActive() + that.getButtonWidth(),
-        'margin-left': -that.getButtonWidth(),
-        'width': that.getButtonWidth(),
+        'left': that.getWidthOfButtonsOnLeftSideOfActive() + that.getActiveButtonWidth(),
+        'margin-left': -that.getActiveButtonWidth(),
+        'width': that.getActiveButtonWidth(),
         'height': that.getButtonHeight()
       });
     },
@@ -166,9 +166,14 @@
           'left': that.getCoordinateOfMenuWrapper()
         });
       }
-      // else if (this.getWidthOfButtonsOnRightSideOfActive() + this.getCenterOfActiveButton() < this.getCenterOfMenuWrapper()) {
-      //   // set the container of menu to the right side
-      // }
+      else if (this.getWidthOfButtonsOnRightSideOfActive() < this.getCenterOfMenuWrapper()) {
+        var arrOfButtonWidth = this.getArrOfButtonWidth();
+
+        this.$getMenuContainer().offset({
+          'left': that.getCoordinateOfMenuWrapper() -
+          (that.getWidthOfMenuContainer(arrOfButtonWidth) - that.getWidthOfMenuWrapper())
+        });
+      }
       else {
         this.$getMenuContainer().offset({
           'left': that.getCenterOfMenuWrapperAtDocument() -
@@ -177,7 +182,6 @@
         });
       }
     }
-    // End set elements characteristics ------------------------------------------------------------------------------
   };
 
   slideButton.setWidthOfMenuContainer();
@@ -186,9 +190,6 @@
   slideButton.setActiveButtonBlock();
   slideButton.setPropertiesOfActiveButtonBlock();
 }(window, jQuery));
-
-
-
 
 
 
